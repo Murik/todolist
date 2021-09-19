@@ -3,11 +3,14 @@ import {Category} from "../model/Category";
 import {TestData} from "../data/TestData";
 import {Priority} from "../model/Priority";
 import {Task} from "../model/Task";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataHandlerService {
+
+  taskSubject = new BehaviorSubject<Task[]>(TestData.tasks);
 
   constructor() { }
 
@@ -19,7 +22,12 @@ export class DataHandlerService {
     return TestData.priorities;
   }
 
-  getTasks(): Task[]{
-    return TestData.tasks;
+  fillTasks() {
+    this.taskSubject.next(TestData.tasks);
+  }
+
+  fillTasksByCategory(category: Category){
+    const tasks = TestData.tasks.filter(value => value.category === category)
+    this.taskSubject.next(tasks);
   }
 }
