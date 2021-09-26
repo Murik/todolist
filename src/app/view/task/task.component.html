@@ -2,13 +2,13 @@
   <div class="card-header card-header-warning">
     <h4 class="card-title">Tasks</h4>
   </div>
-  <div class="card-body table-responsive">
+  <div class="card-body table-responsive" *ngIf="tasks.length>0">
 
-        <table [dataSource]="dataSource" mat-table>
+    <table [dataSource]="dataSource" mat-table matSort>
 
       <ng-container matColumnDef="color">
         <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let task" [style.background-color]="getPrioryColor(task)"class="col-color">
+        <td mat-cell *matCellDef="let task" [style.background-color]="getPrioryColor(task)" class="col-color">
         </td>
       </ng-container>
 
@@ -21,31 +21,32 @@
 
       <!-- Name Column -->
       <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name</th>
         <td mat-cell *matCellDef="let task" [class.completed]="task.completed" class="col-title">
           {{task.title}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date</th>
         <td mat-cell *matCellDef="let task"
-            [ngClass]="{'completed':task.completed, 'nodate': task.date ==null}" class="col-date">
+            [ngClass]="{'completed':task.completed, 'novalue': task.date ==null}" class="col-date">
           {{task.date | date:'E, dd-MM-yyyy HH:mm:ss'}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="priority">
-        <th mat-header-cell *matHeaderCellDef> Priority </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Priority</th>
         <td mat-cell *matCellDef="let task"
-            [ngClass]="{'completed':task.completed, 'nopriority': task.priority ==null}" class="col-priority">
+            [ngClass]="{'completed':task.completed, 'novalue': task.priority ==null}" class="col-priority">
           {{task.priority ? task.priority.title : "---"}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="category">
-        <th mat-header-cell *matHeaderCellDef> Category </th>
-        <td mat-cell *matCellDef="let task" class="col-category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Category</th>
+        <td mat-cell *matCellDef="let task"
+            [ngClass]="{'completed':task.completed, 'novalue': task.priority ==null}" class="col-category">
           {{task.category ? task.category.title : "---"}}
         </td>
       </ng-container>
@@ -54,21 +55,24 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-<!--      <tr *ngFor="let task of tasks; let i = index"-->
-<!--          [class.completed]="task.completed">-->
+      <!--      <tr *ngFor="let task of tasks; let i = index"-->
+      <!--          [class.completed]="task.completed">-->
 
-<!--        <td [class.novalue]="task.date==null">{{task.date ? (task.date | date:'E, dd-MM-yyyy HH:mm:ss') : "no date"}}</td>-->
-<!--        <td>-->
-<!--          <div class="form-check">-->
-<!--            <label class="form-check-label">-->
-<!--              <input class="form-check-input" type="checkbox" value=""-->
-<!--                     [checked]="task.completed"-->
-<!--                     (click)="toggleTaskCompleted(task)">-->
-<!--              <span class="form-check-sign">-->
-<!--                <span class="check"></span>-->
-<!--              </span>-->
-<!--            </label>-->
-<!--          </div>-->
+      <!--        <td [class.novalue]="task.date==null">{{task.date ? (task.date | date:'E, dd-MM-yyyy HH:mm:ss') : "no date"}}</td>-->
+      <!--        <td>-->
+      <!--          <div class="form-check">-->
+      <!--            <label class="form-check-label">-->
+      <!--              <input class="form-check-input" type="checkbox" value=""-->
+      <!--                     [checked]="task.completed"-->
+      <!--                     (click)="toggleTaskCompleted(task)">-->
+      <!--              <span class="form-check-sign">-->
+      <!--                <span class="check"></span>-->
+      <!--              </span>-->
+      <!--            </label>-->
+      <!--          </div>-->
     </table>
+    <mat-paginator [pageSizeOptions]="[10,20,50,100]" showFirstLastButtons></mat-paginator>
   </div>
+
+  <div *ngIf="tasks.length==0"><p class="not-found">Nothing to show</p></div>
 </div>
