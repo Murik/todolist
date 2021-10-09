@@ -2,7 +2,7 @@
   <div class="card-header card-header-warning">
     <h4 class="card-title">Tasks</h4>
   </div>
-  <div class="card-body table-responsive" *ngIf="tasks.length>0">
+  <div class="card-body table-responsive" *ngIf="tasks && tasks.length>0">
 
     <table [dataSource]="dataSource" mat-table matSort>
 
@@ -22,7 +22,8 @@
       <!-- Name Column -->
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Name</th>
-        <td mat-cell *matCellDef="let task" [class.completed]="task.completed" class="col-title">
+        <td mat-cell *matCellDef="let task" [class.completed]="task.completed" class="col-title pointer"
+            (click)="onClickTask(task)">
           {{task.title}}
         </td>
       </ng-container>
@@ -46,7 +47,7 @@
       <ng-container matColumnDef="category">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Category</th>
         <td mat-cell *matCellDef="let task"
-            [ngClass]="{'completed':task.completed, 'novalue': task.priority ==null}" class="col-category">
+            [ngClass]="{'completed':task.completed, 'novalue': task.category ==null}" class="col-category">
           {{task.category ? task.category.title : "---"}}
         </td>
       </ng-container>
@@ -74,5 +75,5 @@
     <mat-paginator [pageSizeOptions]="[10,20,50,100]" showFirstLastButtons></mat-paginator>
   </div>
 
-  <div *ngIf="tasks.length==0"><p class="not-found">Nothing to show</p></div>
+  <div *ngIf="tasks && tasks.length==0"><p class="not-found">Nothing to show</p></div>
 </div>

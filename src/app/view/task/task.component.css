@@ -47,3 +47,7 @@
 .mat-column-id {
   text-align: center;
 }
+
+.pointer {
+  cursor: pointer;
+}

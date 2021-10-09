@@ -3,31 +3,36 @@ import {Category} from "../model/Category";
 import {TestData} from "../data/TestData";
 import {Priority} from "../model/Priority";
 import {Task} from "../model/Task";
-import {BehaviorSubject} from "rxjs";
+import {Observable} from "rxjs";
+import {TaskDAOImpl} from "../data/impl/TaskDAOImpl";
+import {TaskDAO} from "../data/interface/TaskDAO";
+import {CategoryDAO} from "../data/interface/CategoryDAO";
+import {CategoryDAOImpl} from "../data/impl/CategoryDAOImpl";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataHandlerService {
 
-  taskSubject = new BehaviorSubject<Task[]>(TestData.tasks);
+  // taskSubject = new BehaviorSubject<Task[]>(TestData.tasks);
+  private taskDao: TaskDAO = new TaskDAOImpl();
+  private categoryDao: CategoryDAO = new CategoryDAOImpl();
 
   constructor() { }
 
-  getCategories(): Category[]{
-   return TestData.categories;
+  getAllCategories(): Observable<Category[]>{
+   return this.categoryDao.getAll();
   }
 
   getPriorities(): Priority[]{
     return TestData.priorities;
   }
 
-  fillTasks() {
-    this.taskSubject.next(TestData.tasks);
+  getAllTasks(): Observable<Task[]>{
+    return this.taskDao.getAll();
   }
 
-  fillTasksByCategory(category: Category){
-    const tasks = TestData.tasks.filter(value => value.category === category)
-    this.taskSubject.next(tasks);
+  searchTasks(selectedCategory: Category, searchText?: string, status?: boolean, priority?: Priority) : Observable<Task[]>{
+    return this.taskDao.search(searchText, selectedCategory,status,priority);
   }
 }

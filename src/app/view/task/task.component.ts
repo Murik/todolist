@@ -1,5 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {DataHandlerService} from "../../service/data-handler.service";
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Task} from "../../model/Task";
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from "@angular/material/sort";
@@ -18,9 +17,18 @@ export class TaskComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
-  tasks: Task[] = [];
+  tasks: Task[];
 
-  constructor(private dataHandler: DataHandlerService) {
+  @Input("tasks")
+  set getTasks(value: Task[]) {
+    this.tasks = value;
+    this.fillTable();
+  }
+
+  @Output()
+  updateTask = new EventEmitter<Task>();
+
+  constructor() {
     this.dataSource = new MatTableDataSource<Task>();
   }
 
@@ -29,8 +37,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.dataHandler.taskSubject.subscribe(value => this.tasks = value);
-    this.refreshTable();
+    this.fillTable();
   }
 
   toggleTaskCompleted(task: Task) {
@@ -49,7 +56,10 @@ export class TaskComponent implements OnInit, AfterViewInit {
       return '#fff';
   }
 
-  private refreshTable() {
+  private fillTable() {
+
+    if(!this.dataSource) return;
+
     this.dataSource.data = this.tasks;
     this.addTableObjects()
 
@@ -75,5 +85,9 @@ export class TaskComponent implements OnInit, AfterViewInit {
   private addTableObjects(){
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  onClickTask(task: Task) {
+    this.updateTask.emit(task);
   }
 }
