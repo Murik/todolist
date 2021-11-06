@@ -8,21 +8,28 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatSortModule} from "@angular/material/sort";
+import {EditTaskModalComponent} from './dialog/edit-task-modal/edit-task-modal.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
     AppComponent,
     CategoriesComponent,
-    TaskComponent
+    TaskComponent,
+    EditTaskModalComponent
   ],
   imports: [
     BrowserModule,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [],
+  entryComponents:[
+    EditTaskModalComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

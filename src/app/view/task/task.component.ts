@@ -3,6 +3,8 @@ import {Task} from "../../model/Task";
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
+import {EditTaskModalComponent} from "../../dialog/edit-task-modal/edit-task-modal.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-task',
@@ -11,7 +13,7 @@ import {MatPaginator} from "@angular/material/paginator";
 })
 export class TaskComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['color', 'id', 'title','date', 'priority', 'category']
+  displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category']
   dataSource: MatTableDataSource<Task>; // контейнер - источник данных для таблицы
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
@@ -20,7 +22,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
   tasks: Task[];
 
   @Input("tasks")
-  set getTasks(value: Task[]) {
+  set setTasks(value: Task[]) {
     this.tasks = value;
     this.fillTable();
   }
@@ -28,7 +30,9 @@ export class TaskComponent implements OnInit, AfterViewInit {
   @Output()
   updateTask = new EventEmitter<Task>();
 
-  constructor() {
+  constructor(
+    private dialog: MatDialog
+  ) {
     this.dataSource = new MatTableDataSource<Task>();
   }
 
@@ -40,25 +44,25 @@ export class TaskComponent implements OnInit, AfterViewInit {
     this.fillTable();
   }
 
-  toggleTaskCompleted(task: Task) {
+  toggleTaskCompleted(task: Task): void {
     task.completed = !task.completed;
   }
 
-  getPrioryColor(task: Task) {
-      if(task.completed) {
-        return "#F8F9FA"
-      }
+  getPrioryColor(task: Task): string {
+    if (task.completed) {
+      return "#F8F9FA"
+    }
 
-      if(task.priority && task.priority.color){
-        return task.priority.color;
-      }
+    if (task.priority && task.priority.color) {
+      return task.priority.color;
+    }
 
-      return '#fff';
+    return '#fff';
   }
 
-  private fillTable() {
+  private fillTable(): void {
 
-    if(!this.dataSource) return;
+    if (!this.dataSource) return;
 
     this.dataSource.data = this.tasks;
     this.addTableObjects()
@@ -82,12 +86,18 @@ export class TaskComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private addTableObjects(){
+  private addTableObjects(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  onClickTask(task: Task) {
-    this.updateTask.emit(task);
+  openEditTaskModal(task: Task): void {
+    // this.updateTask.emit(task);
+    const dialogRef = this.dialog.open(EditTaskModalComponent,
+      {data: [task, 'Edit Task'], autoFocus: true},);
+    dialogRef.afterClosed().subscribe(result => {
+
+    })
   }
+
 }
