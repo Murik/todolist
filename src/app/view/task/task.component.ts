@@ -5,6 +5,8 @@ import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {EditTaskModalComponent} from "../../dialog/edit-task-modal/edit-task-modal.component";
 import {MatDialog} from "@angular/material/dialog";
+import {ConfirmModalComponent} from "../../dialog/confirm-modal/confirm-modal.component";
+import {Category} from "../../model/Category";
 
 @Component({
   selector: 'app-task',
@@ -13,7 +15,7 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class TaskComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category']
+  displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'operations', 'select']
   dataSource: MatTableDataSource<Task>; // контейнер - источник данных для таблицы
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
@@ -34,6 +36,9 @@ export class TaskComponent implements OnInit, AfterViewInit {
   @Output()
   deleteTask = new EventEmitter<Task>();
 
+  @Output() selectCategory = new EventEmitter<Category>();
+
+
   constructor(
     private dialog: MatDialog
   ) {
@@ -46,10 +51,6 @@ export class TaskComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.fillTable();
-  }
-
-  toggleTaskCompleted(task: Task): void {
-    task.completed = !task.completed;
   }
 
   getPrioryColor(task: Task): string {
@@ -111,4 +112,30 @@ export class TaskComponent implements OnInit, AfterViewInit {
     })
   }
 
+  openDeleteDialog(task: Task): void {
+    var matDialogRef = this.dialog.open(ConfirmModalComponent, {
+      maxWidth: '500px',
+      data: {
+        dialogTitle: 'Delete confirmation',
+        message: `Really want to delete task:"${task.title}"?`
+      },
+      autoFocus:false
+    });
+
+    matDialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.deleteTask.emit(task);
+      }
+    });
+
+  }
+
+  onToggleStatus(task: Task) {
+    task.completed = !task.completed;
+    this.updateTask.emit(task);
+  }
+
+  changeCategory(category: Category): void {
+    this.selectCategory.emit(category);
+  }
 }

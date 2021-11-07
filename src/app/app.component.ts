@@ -12,7 +12,7 @@ export class AppComponent implements OnInit{
   title = 'todolist';
   tasks: Task[];
   categories: Category[];
-  private selectedCategory: Category;
+  selectedCategory: Category;
 
   constructor(private dataHandler: DataHandlerService) {
 
