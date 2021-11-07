@@ -26,7 +26,7 @@ export class CategoryDAOImpl implements CategoryDAO{
     );
   }
 
-  update(id: number, data: Category): Observable<Category> {
+  update(data: Category): Observable<Category> {
     return of(data);
   }
 

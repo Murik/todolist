@@ -20,7 +20,7 @@ export class PriorityDAOImpl implements PriorityDAO{
     return of(TestData.priorities);
   }
 
-  update(id: number, data: Priority): Observable<Priority> {
+  update(data: Priority): Observable<Priority> {
     return of(data);
   }
 

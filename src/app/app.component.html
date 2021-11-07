@@ -145,7 +145,7 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <app-task [tasks]="tasks" (updateTask)="onUpdateTask($event)"></app-task>
+            <app-task [tasks]="tasks" (updateTask)="onUpdateTask($event)" (deleteTask)="onDeleteTask($event)"></app-task>
           </div>
         </div>
       </div>

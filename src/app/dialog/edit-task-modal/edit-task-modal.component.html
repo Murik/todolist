@@ -1,5 +1,84 @@
-<div>
-  <h3>{{modalTitle}}</h3>
-    <span>{{editedTask.title}}</span>
+<mat-dialog-content>
 
-</div>
+  <p mat-dialog-title>{{modalTitle}}</p>
+  <!--    <span>{{editedTask.title}}</span>-->
+  <mat-form-field  appearance="fill">
+    <mat-label>Title: *</mat-label>
+    <input type="title" #inputTitle matInput [(ngModel)]="tmpTitle"
+           (keydown.enter)="onConfirm()">
+    <!--           [formControl]="taskFormControl"-->
+    <mat-hint>Task title</mat-hint>
+    <mat-error *ngIf="taskFormControl.hasError('required')">
+      Title is <strong>required</strong>
+    </mat-error>
+    <button *ngIf="tmpTitle.trim().length>0"
+            mat-button matSuffix mat-icon-button aria-label="Clear"
+            (click)="tmpTitle = ''">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </mat-form-field>
+
+
+  <mat-form-field appearance="fill">
+    <mat-label>Select category</mat-label>
+    <mat-select [(ngModel)]="tmpCategory">
+      <mat-option [value]="null">No category</mat-option>
+      <mat-option *ngFor="let category of categories" [value]="category">
+        {{category.title}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field appearance="fill">
+    <mat-label>Select priority</mat-label>
+    <mat-select [(ngModel)]="tmpPriority">
+      <mat-option [value]="null">No priority</mat-option>
+      <mat-option *ngFor="let priority of priorities" [value]="priority">
+        {{priority.title}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <!--    <mat-label>Choose a complete date</mat-label>-->
+    <input matInput placeholder="Choose a complete date" #inputDate
+           readonly="true"
+           [matDatepicker]="datepicker"
+           [(ngModel)]="tmpDate"
+           (click)="datepicker.open()"
+    >
+    <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+    <mat-datepicker #datepicker>
+      <mat-datepicker-actions>
+        <button mat-button matDatepickerCancel>Cancel</button>
+        <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+      </mat-datepicker-actions>
+    </mat-datepicker>
+    <button *ngIf="inputDate.value.trim().length>0"
+            mat-button matSuffix mat-icon-button aria-label="Clear"
+            (click)="tmpDate = undefined">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </mat-form-field>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="col-md-5 col-12">
+    <button mat-raised-button color="primary"
+            (click)="onConfirm()"
+            [disabled]="inputTitle.value.trim().length==0">
+      Save
+    </button>
+    <button mat-raised-button (click)="onCancel()">Cancel</button>
+  </div>
+  <div class="col-md-7 col-12 text-right">
+    <button mat-button class="green" (click)="statusChange()">
+      <div *ngIf="editedTask.completed"> Activate</div>
+      <div *ngIf="!editedTask.completed">Complete</div>
+    </button>
+
+    <button mat-button class="red" (click)="delete()">Delete</button>
+
+  </div>
+</mat-dialog-actions>

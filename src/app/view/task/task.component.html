@@ -32,7 +32,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Date</th>
         <td mat-cell *matCellDef="let task"
             [ngClass]="{'completed':task.completed, 'novalue': task.date ==null}" class="col-date">
-          {{task.date | date:'E, dd-MM-yyyy HH:mm:ss'}}
+          {{task.date | taskDate}}
         </td>
       </ng-container>
 

@@ -11,7 +11,10 @@ export class TaskDAOImpl implements TaskDAO{
   }
 
   delete(id: number): Observable<Task | undefined> {
-    return of(undefined);
+    const find = TestData.tasks.find(value => value.id === id);
+    debugger
+    TestData.tasks.splice(TestData.tasks.indexOf(find!), 1);
+    return of(find);
   }
 
   get(id: number): Observable<Task | undefined> {
@@ -54,8 +57,10 @@ export class TaskDAOImpl implements TaskDAO{
     return tasks;
   }
 
-  update(id: number, data: Task): Observable<Task> {
-    return of(data);
+  update(task: Task): Observable<Task> {
+    const findIndex = TestData.tasks.findIndex(value => value.id === task.id);
+    TestData.tasks.splice(findIndex, 1, task);
+    return of(task);
   }
 
 

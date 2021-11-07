@@ -8,7 +8,7 @@ export interface CommonDAO<T>{
 
   delete(id: number): Observable<T | undefined>;
 
-  update(id: number, data: T): Observable<T>;
+  update(data: T): Observable<T>;
 
   getAll(): Observable<T[]>;
 

@@ -21,6 +21,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
 
   tasks: Task[];
 
+
   @Input("tasks")
   set setTasks(value: Task[]) {
     this.tasks = value;
@@ -29,6 +30,9 @@ export class TaskComponent implements OnInit, AfterViewInit {
 
   @Output()
   updateTask = new EventEmitter<Task>();
+
+  @Output()
+  deleteTask = new EventEmitter<Task>();
 
   constructor(
     private dialog: MatDialog
@@ -96,7 +100,14 @@ export class TaskComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(EditTaskModalComponent,
       {data: [task, 'Edit Task'], autoFocus: true},);
     dialogRef.afterClosed().subscribe(result => {
-
+      if(result === 'delete'){
+        this.deleteTask.emit(task);
+        return;
+      }
+        if(result as Task) {
+          this.updateTask.emit(task);
+          return;
+        }
     })
   }
 
