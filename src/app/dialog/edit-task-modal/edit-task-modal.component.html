@@ -4,16 +4,16 @@
   <!--    <span>{{editedTask.title}}</span>-->
   <mat-form-field  appearance="fill">
     <mat-label>Title: *</mat-label>
-    <input type="title" #inputTitle matInput [(ngModel)]="tmpTitle"
+    <input type="title" #inputTitle matInput [(ngModel)]="tmpTaskTitle"
            (keydown.enter)="onConfirm()">
     <!--           [formControl]="taskFormControl"-->
     <mat-hint>Task title</mat-hint>
     <mat-error *ngIf="taskFormControl.hasError('required')">
       Title is <strong>required</strong>
     </mat-error>
-    <button *ngIf="tmpTitle.trim().length>0"
+    <button *ngIf="tmpTaskTitle.trim().length>0"
             mat-button matSuffix mat-icon-button aria-label="Clear"
-            (click)="tmpTitle = ''">
+            (click)="tmpTaskTitle = ''">
       <mat-icon>clear</mat-icon>
     </button>
   </mat-form-field>

@@ -37,14 +37,14 @@ export class EditTaskModalComponent implements OnInit {
   // matcher = new MyErrorStateMatcher();
 
   categories: Category[];
-  tmpCategory?: Category;
+  tmpCategory?: Category | null;
 
   priorities: Priority[];
   tmpPriority?: Priority;
 
   modalTitle: string;
   editedTask: Task;
-  tmpTitle: string;
+  tmpTaskTitle: string;
 
   tmpDate?: Date;
 
@@ -53,7 +53,7 @@ export class EditTaskModalComponent implements OnInit {
     this.modalTitle = this.data[1];
 
     console.log(this.editedTask);
-    this.tmpTitle = this.editedTask.title;
+    this.tmpTaskTitle = this.editedTask.title;
     this.tmpCategory = this.editedTask.category;
     this.tmpPriority = this.editedTask.priority;
     this.tmpDate = this.editedTask.date;
@@ -64,7 +64,7 @@ export class EditTaskModalComponent implements OnInit {
   }
 
   onConfirm(): void {
-    this.editedTask.title = this.tmpTitle;
+    this.editedTask.title = this.tmpTaskTitle;
     this.editedTask.category = this.tmpCategory;
     this.editedTask.priority = this.tmpPriority;
     this.editedTask.date = this.tmpDate;

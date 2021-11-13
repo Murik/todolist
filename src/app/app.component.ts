@@ -12,7 +12,7 @@ export class AppComponent implements OnInit{
   title = 'todolist';
   tasks: Task[];
   categories: Category[];
-  selectedCategory: Category;
+  selectedCategory: Category| null;
 
   constructor(private dataHandler: DataHandlerService) {
 
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit{
   }
 
 
-  onSelectCategory(category: Category) {
+  onSelectCategory(category: Category | null) {
     this.selectedCategory = category;
     this.dataHandler.searchTasks(
       this.selectedCategory).subscribe(tasks => {
@@ -36,21 +36,33 @@ export class AppComponent implements OnInit{
   onUpdateTask(task: Task) {
     this.dataHandler.updateTask(task).subscribe(() => {
       //todo bad stile -> move to map
-        this.dataHandler.searchTasks(
-          this.selectedCategory).subscribe(tasks => {
-            this.tasks = tasks;
-        });
+      this.onSelectCategory(this.selectedCategory);
     });
   }
 
   onDeleteTask(task: Task) {
     this.dataHandler.deleteTask(task.id).subscribe(() => {
       //todo bad stile -> move to map
-      this.dataHandler.searchTasks(
-        this.selectedCategory).subscribe(tasks => {
-        this.tasks = tasks;
-      });
+      this.onSelectCategory(this.selectedCategory);
+    });
+  }
 
+  onUpdateCategory(category: Category): void {
+    this.dataHandler.updateCategory(category).subscribe(() => {
+      //todo bad stile -> move to map
+      this.onSelectCategory(this.selectedCategory);
+    });
+  }
+
+
+  onDeleteCategory(category: Category) {
+
+    this.dataHandler.deleteCategory(category.id).subscribe(() => {
+      if (this.selectedCategory === category) {
+        this.selectedCategory = null;
+      }
+      //todo bad stile -> move to map
+      this.onSelectCategory(this.selectedCategory);
     });
   }
 }

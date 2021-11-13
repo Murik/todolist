@@ -6,7 +6,7 @@ import {Priority} from "../../model/Priority";
 
 export interface TaskDAO extends CommonDAO<Task>{
 
-  search(searchText?: string, category?: Category, status?: boolean, priority?: Priority ) : Observable<Task[]>;
+  search(searchText?: string, category?: Category| null, status?: boolean, priority?: Priority ) : Observable<Task[]>;
 
   getCompletedCountInCategory(category: Category): Observable<number>;
 

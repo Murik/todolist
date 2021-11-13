@@ -23,6 +23,7 @@ import {TaskDatePipe} from './pipe/task-date.pipe';
 import {registerLocaleData} from "@angular/common";
 import localeRu from '@angular/common/locales/ru';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {EditCategoryModalComponent} from "./dialog/edit-category-modal/edit-category-modal.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -32,6 +33,7 @@ registerLocaleData(localeRu, 'ru');
     CategoriesComponent,
     TaskComponent,
     EditTaskModalComponent,
+    EditCategoryModalComponent,
     ConfirmModalComponent,
     TaskDatePipe
   ],
@@ -55,7 +57,8 @@ registerLocaleData(localeRu, 'ru');
   ],
   providers: [],
   entryComponents:[
-    EditTaskModalComponent
+    EditTaskModalComponent,
+    EditCategoryModalComponent
   ],
   bootstrap: [AppComponent]
 })

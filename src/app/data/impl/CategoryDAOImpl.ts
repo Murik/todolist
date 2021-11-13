@@ -8,8 +8,16 @@ export class CategoryDAOImpl implements CategoryDAO{
     return of(data);
   }
 
-  delete(id: number): Observable<Category | undefined> {
-    return of(undefined);
+  delete(id: number): Observable<Category> {
+    TestData.tasks.forEach(task => {
+      if(task.category?.id === id){
+        task.category = null;
+      }
+    })
+
+    const find = TestData.categories.find(value => value.id === id);
+    TestData.categories.splice(TestData.categories.indexOf(find!), 1);
+    return of(find!);
   }
 
   get(id: number): Observable<Category| undefined> {
@@ -26,8 +34,10 @@ export class CategoryDAOImpl implements CategoryDAO{
     );
   }
 
-  update(data: Category): Observable<Category> {
-    return of(data);
+  update(category: Category): Observable<Category> {
+    const find = TestData.categories.find(value => value.id === category.id);
+    TestData.categories.splice(TestData.categories.indexOf(find!), 1, category);
+    return of(find!);
   }
 
 

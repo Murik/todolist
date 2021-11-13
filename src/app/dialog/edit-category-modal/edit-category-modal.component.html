@@ -1,0 +1,33 @@
+<mat-dialog-content>
+
+  <p mat-dialog-title>{{modalTitle}}</p>
+  <!--    <span>{{editedTask.title}}</span>-->
+  <mat-form-field  appearance="fill">
+    <mat-label>Title: *</mat-label>
+    <input type="title" #inputTitle matInput [(ngModel)]="tmpCategoryTitle"
+           (keydown.enter)="onConfirm()">
+    <mat-hint>Category title</mat-hint>
+    <mat-error *ngIf="categoryFormControl.hasError('required')">
+      Title is <strong>required</strong>
+    </mat-error>
+    <button *ngIf="tmpCategoryTitle.trim().length>0"
+            mat-button matSuffix mat-icon-button aria-label="Clear"
+            (click)="tmpCategoryTitle = ''">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="col-md-9 col-12">
+    <button mat-raised-button color="primary"
+            (click)="onConfirm()"
+            [disabled]="inputTitle.value.trim().length==0">
+      Save
+    </button>
+    <button mat-raised-button (click)="onCancel()">Cancel</button>
+  </div>
+  <div class="col-md-3 col-9 text-right">
+    <button mat-button class="red" (click)="delete()">Delete</button>
+
+  </div>
+</mat-dialog-actions>

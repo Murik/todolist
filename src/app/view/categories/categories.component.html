@@ -4,13 +4,30 @@
   </a></div>
   <div class="sidebar-wrapper">
     <ul class="nav">
+
       <li class="nav-item pointer"
-          *ngFor="let category of categories"
+          (click)="showTasksByCategory(null)"
+          [class.active]="null === selectedCategory"
+      >
+        <a class="nav-link">
+          <p>Все</p>
+        </a>
+      </li>
+      <div class="line"></div>
+
+      <li class="nav-item pointer"
+          *ngFor="let category of categories; let index = index"
           (click)="showTasksByCategory(category)"
+          (mouseenter)="showEditIcon(index)"
+          (mouseleave)="showEditIcon(null)"
         [class.active]="category === selectedCategory"
       >
         <a class="nav-link">
-          <p>{{category.title}}</p>
+          <span class="category-title">{{category.title}}</span>
+          <span class="edit-category-icon-area">
+            <mat-icon *ngIf="indexMouseMove === index"
+            (click)="$event.stopPropagation(); openEditCategoryModal(category) ">edit</mat-icon>
+          </span>
         </a>
       </li>
     </ul>

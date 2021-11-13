@@ -35,7 +35,7 @@ export class DataHandlerService {
     return this.taskDao.getAll();
   }
 
-  searchTasks(selectedCategory: Category, searchText?: string, status?: boolean, priority?: Priority) : Observable<Task[]>{
+  searchTasks(selectedCategory: Category| null, searchText?: string, status?: boolean, priority?: Priority) : Observable<Task[]>{
     return this.taskDao.search(searchText, selectedCategory,status,priority);
   }
 
@@ -45,5 +45,13 @@ export class DataHandlerService {
 
   deleteTask(id: number): Observable<Task | undefined> {
     return this.taskDao.delete(id);
+  }
+
+  updateCategory(category: Category): Observable<Category> {
+    return this.categoryDao.update(category);
+  }
+
+  deleteCategory(id: number): Observable<Category | undefined> {
+    return this.categoryDao.delete(id);
   }
 }
